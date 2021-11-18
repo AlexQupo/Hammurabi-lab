@@ -41,13 +41,13 @@ protected:
 	int currentCitySize_;
 	int pricePerAcreOfLandInRound_;
 
-	void updatePrice() {
+	void UpdatePrice() {
 		int minValue = 17;
 		int widthValue = 26 - 17 + 1;
 		pricePerAcreOfLandInRound_ = minValue + std::rand() % widthValue;
 	}
 
-	int inputOfQuantity(std::string text, int min = 0, int max = INT_MAX) {
+	int InputOfQuantity(std::string text, int min = 0, int max = INT_MAX) {
 		int cost;
 		for (;;) {
 			std::cout << text << "\n" << std::flush;
@@ -63,25 +63,25 @@ protected:
 		}
 	}
 
-	void requestInput() {
+	void RequestInput() {
 
 
 	}
 
 public:
-	void reset() {
+	void Reset() {
 
 	}
 
-	void next() {
-		updatePrice();
-		inputOfQuantity("Сколько акров земли вы хотите купить?", 0, 100);
-		inputOfQuantity("Сколько акров земли вы хотите продать?", 0, 100);
-		inputOfQuantity("Сколько бушелей пшеницы вы хотите использовать в качестве еды?", 0, 100);
-		inputOfQuantity("Сколько акров земли необходимо засеять пшеницей?", 0, 100);
+	void Next() {
+		UpdatePrice();
+		InputOfQuantity("Сколько акров земли вы хотите купить?", 0, 100);
+		InputOfQuantity("Сколько акров земли вы хотите продать?", 0, 100);
+		InputOfQuantity("Сколько бушелей пшеницы вы хотите использовать в качестве еды?", 0, 100);
+		InputOfQuantity("Сколько акров земли необходимо засеять пшеницей?", 0, 100);
 	}
 
-	void end() {
+	void End() {
 
 	}
 };
@@ -90,11 +90,11 @@ public:
 int main() {
 	setlocale(LC_ALL, "Russian");
 	Round rnd = Round();
-	rnd.next();
+	rnd.Next();
 	//srand(time(0));
 	/* int minValue = 17;
 	 int widthValue = 26 - 17 + 1;
 	 int pricePerAcre = 17 + std::rand() % 10;
 	 std::cout << pricePerAcre << std::endl;*/
-
+	
 }
