@@ -3,6 +3,7 @@
 #include <ctime>
 #include "windows.h"
 #include <iomanip>
+#include <string>
 #include <fstream>
 //#include <math.h>
 
@@ -57,7 +58,7 @@ public:
 class Round {
 private:
 	// Видимые данные для игрока
-	int numOfRound_;//Номер раунда
+	int numOfRound_ = 0;//Номер раунда
 	int amountOfDeadPeople_ = 0;//Умерло +
 	int amountOfNewPeople_ = 0;//Приезжих +
 	bool isPlague_ = false;//Чума +
@@ -76,9 +77,9 @@ private:
 	int wheatForFood_ = 0;// Количество пшеницы на еду
 	int landForSowing_ = 0;// Количество пшеницы на посадку
 	float coefficientOfDead_ = 0;//Коэф умерших за год
-	bool isNewGame = false;
+	bool isNewGame_ = false;
 
-	float avgDeadPeople = 0;
+	float avgDeadPeople_ = 0;
 
 	void UpdatePrice() {
 		int minValue = 17;
@@ -105,7 +106,7 @@ private:
 	}
 
 public:
-	void NewGame() {
+	void New() {
 		city_ = City();
 		numOfRound_ = 0;
 		currentPopulation_ = city_.getPopulation();
@@ -123,7 +124,7 @@ public:
 
 		std::cout << "Да начнется игра!" << std::endl;
 		std::cout << std::endl;
-		isNewGame = true;
+		isNewGame_ = true;
 	}
 	void StartGame() {
 
@@ -135,7 +136,7 @@ public:
 		numOfRound_++;
 		UpdatePrice();
 
-		if(isNewGame) {
+		if(isNewGame_) {
 			std::cout << "Повелитель, это твой первый год правления. Поздравляю вас. \nТекущая цена за один АКР земли равна - " << pricePerAcreOfLandInRound_ << std::endl;
 		}
 		else {
@@ -221,7 +222,7 @@ public:
 			Defeat();
 			return;
 		}
-		avgDeadPeople += coefficientOfDead_;
+		avgDeadPeople_ += coefficientOfDead_;
 
 		//Приезжих
 		amountOfNewPeople_ = amountOfDeadPeople_ / 2 + (5 - avgAmountOfWheatPerAcre_) * city_.getBushelOfWheat() / 600 + 1;
@@ -247,7 +248,7 @@ public:
 	}
 
 	void Next() {
-		isNewGame = false;
+		isNewGame_ = false;
 		if(numOfRound_ == 10) {
 			Result();
 		}
@@ -257,20 +258,20 @@ public:
 	}
 
 	void Result() {
-		avgDeadPeople = avgDeadPeople / numOfRound_;
+		avgDeadPeople_ = avgDeadPeople_ / numOfRound_;
 		float amountAcresOfLandOnPerson = static_cast<float>(city_.getAcresOfLand())/static_cast<float>(city_.getPopulation());
 
-		if (avgDeadPeople > 0.33f && amountAcresOfLandOnPerson < 7) {
+		if (avgDeadPeople_ > 0.33f && amountAcresOfLandOnPerson < 7) {
 			score_ = "Плохо";
 			std::cout << "Из-за вашей некомпетентности в управлении, народ устроил бунт, и изгнал вас их города.Теперь вы вынуждены влачить жалкое существование в изгнании";
 		}
 
-		else if (avgDeadPeople > 0.10f && amountAcresOfLandOnPerson < 9) {
+		else if (avgDeadPeople_ > 0.10f && amountAcresOfLandOnPerson < 9) {
 			score_ = "Удовлетворительно";
 			std::cout << "Вы правили железной рукой, подобно Нерону и Ивану Грозному.Народ вздохнул с облегчением, и никто больше не желает видеть вас правителем";
 		}
 
-		else if (avgDeadPeople > 0.3f && amountAcresOfLandOnPerson < 10) {
+		else if (avgDeadPeople_ > 0.3f && amountAcresOfLandOnPerson < 10) {
 			score_ = "Хорошо";
 			std::cout << "Вы справились вполне неплохо, у вас, конечно, есть недоброжелатели, но многие хотели бы увидеть вас во главе города снова";
 		}
@@ -286,20 +287,48 @@ public:
 	void Defeat() {
 		std::cout << "Вы проиграли!" << std::endl;
 	}
+
+	std::string GetData() const {
+		
+		return std::to_string(numOfRound_) + '\n'
+			+ std::to_string(city_.getPopulation()) + '\n'
+			+ std::to_string(city_.getBushelOfWheat()) + '\n'
+			+ std::to_string(city_.getAcresOfLand()) + '\n'
+			+ std::to_string(avgDeadPeople_) + '\n';
+	}
 };
 
 
 class Game {
+private:
+	Round rnd = Round();
+
+
+public:
+
+
+	void New() {
+		rnd.New();
+		std::ofstream saveFile{ "save.txt" };
+	}
 
 	void Start() {
 		
 	}
 
 	void Save() {
-		
+		std::ofstream fout;
+		fout.open("save.txt");
+		if (!fout.is_open()) {
+			std::cout << "ERROR" << std::endl;
+		}
+		else {
+			fout << "Hehe boooysz";
+		}
 	}
 
 	void Resume() {
+		std::ifstream fin;
 		
 	}
 
@@ -312,11 +341,18 @@ class Game {
 
 int main() {
 	setlocale(LC_ALL, "Russian");
-	Round rnd = Round();
+	//Round rnd = Round();
+
+	
+	
+	std::string a = "abc";
+	std::string b = "zxc";
+	std::string c = a + b;
+	std::cout << c;
 
 
-	rnd.NewGame();
-	rnd.Beginning();
+	//rnd.NewGame();
+	//rnd.Beginning();
 
 
 
