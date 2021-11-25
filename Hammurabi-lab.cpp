@@ -301,15 +301,19 @@ public:
 
 class Game {
 private:
-	Round rnd = Round();
+	Round rnd;
 
 
 public:
 
 
 	void New() {
+		rnd = Round();
 		rnd.New();
 		std::ofstream saveFile{ "save.txt" };
+		saveFile.open("save.txt");
+		saveFile << rnd.GetData();
+		saveFile.close();
 	}
 
 	void Start() {
@@ -323,7 +327,7 @@ public:
 			std::cout << "ERROR" << std::endl;
 		}
 		else {
-			fout << "Hehe boooysz";
+			fout << rnd.GetData() << std::endl;
 		}
 	}
 
@@ -343,14 +347,17 @@ int main() {
 	setlocale(LC_ALL, "Russian");
 	//Round rnd = Round();
 
-	
+	Game session = Game();
+	session.New();
 	
 	std::string a = "abc";
 	std::string b = "zxc";
 	std::string c = a + b;
 	std::cout << c;
 
-
+	Round rnd = Round();
+	rnd.New();
+	std::cout << rnd.GetData();
 	//rnd.NewGame();
 	//rnd.Beginning();
 
